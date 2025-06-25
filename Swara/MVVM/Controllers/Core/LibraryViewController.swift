@@ -13,6 +13,7 @@ class LibraryViewController: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = .systemBackground
+        
     }
     
 
