@@ -52,9 +52,28 @@ class WelcomeViewController: UIViewController {
     }
     
     
+    
     private func handleSignIn(success: Bool) {
-        // log user in or yel for error
+        guard success else {
+            // MARK: CREATING AN ALERT
+            DispatchQueue.main.async {
+                let alert = UIAlertController(title: "Oops",
+                                              message: "Something went wrong while signing in", // Fixed typo
+                                              preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler: nil))
+                self.present(alert, animated: true)
+            }
+            return
+        }
+        
+        // Presenting main app tab bar controller
+        DispatchQueue.main.async {
+            let mainAppTabBarVc = TabBarViewController()
+            mainAppTabBarVc.modalPresentationStyle = .fullScreen
+            self.present(mainAppTabBarVc, animated: true)
+        }
     }
+
   
 
 }

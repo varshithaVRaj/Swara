@@ -36,8 +36,7 @@ class AuthViewController: UIViewController, WKNavigationDelegate {
         guard let url = AuthManager.shared.signInURL else {
             return
         }
-        
-        print("url to load is \(url)")
+    
         webView.load(URLRequest(url: url))
     }
     
@@ -47,6 +46,30 @@ class AuthViewController: UIViewController, WKNavigationDelegate {
         
         print("view.bounds: \(view.bounds)") // Debugging
         webView.frame = view.bounds
+    }
+    
+    func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+        
+        guard let url = webView.url else {
+            return
+        }
+       
+        
+        let component = URLComponents(string: url.absoluteString)
+        guard let code = component?.queryItems?.first(where: { $0.name == "code" })?.value else {return}
+        print("code: \(code)")
+        webView.isHidden = true
+        
+        AuthManager.shared.exchangeCodeForToken(code: code) { [weak self] result in
+            
+            DispatchQueue.main.async {
+                self?.navigationController?.popViewController(animated: true)
+            }
+            
+            self?.completionHandler?(result)
+            
+        }
+       
     }
 
 
