@@ -33,10 +33,13 @@ class AuthViewController: UIViewController, WKNavigationDelegate {
         webView.navigationDelegate = self
         view.addSubview(webView)
         
+       //MARK: INORDER TO LOAD AN OTHER URL FROM THIS PAGE, WE USE THIS
+        
         guard let url = AuthManager.shared.signInURL else {
             return
         }
     
+        print("the url to Authenticate is \(url)")
         webView.load(URLRequest(url: url))
     }
     
@@ -53,9 +56,9 @@ class AuthViewController: UIViewController, WKNavigationDelegate {
         guard let url = webView.url else {
             return
         }
-       
         
         let component = URLComponents(string: url.absoluteString)
+        
         guard let code = component?.queryItems?.first(where: { $0.name == "code" })?.value else {return}
         print("code: \(code)")
         webView.isHidden = true
@@ -67,9 +70,7 @@ class AuthViewController: UIViewController, WKNavigationDelegate {
             }
             
             self?.completionHandler?(result)
-            
         }
-       
     }
 
 

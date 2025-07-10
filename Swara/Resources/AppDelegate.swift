@@ -32,6 +32,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window.makeKeyAndVisible()
         self.window = window
         
+        AuthManager.shared.refreshIfNeeded{ success in
+            print("is token refreshed ? \(success)")
+        }
+        
         print("the url is: \(AuthManager.shared.signInURL?.absoluteString ?? "Not Signed In")")
         
         
